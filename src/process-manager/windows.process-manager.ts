@@ -8,6 +8,7 @@ import { ProcessManager } from './process-manager';
 export class WindowsProcessManager implements ProcessManager {
   getProcesses(): Promise<Process[]> {
     const result = shell.exec('netstat -aon');
+
     const parsedTable = tableParser.parse(result);
 
     return Promise.resolve([]);
