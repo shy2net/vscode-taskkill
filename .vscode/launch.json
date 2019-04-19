@@ -4,7 +4,8 @@
 // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 {
 	"version": "0.2.0",
-	"configurations": [{
+	"configurations": [
+		{
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
@@ -28,6 +29,16 @@
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/test/**/*.js"
+			],
+			"preLaunchTask": "npm: watch"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch Process Manager Test",
+			"program": "${workspaceFolder}/src/test/process-manager.test.ts",
+			"outFiles": [
+				"${workspaceFolder}/out/**/*.js"
 			],
 			"preLaunchTask": "npm: watch"
 		}
