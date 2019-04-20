@@ -1,25 +1,37 @@
 import * as vscode from 'vscode';
+import { ProcessManager } from '../process-manager/process-manager';
+import { Process } from '../process-manager';
 
 export function registerCommand() {
   return vscode.commands.registerCommand(
     'extension.showActiveNetworkTasks',
-    () => {
-      // Display a message box to the user
-      vscode.window.showInformationMessage('Hello World!');
-
+    async () => {
       const panel = vscode.window.createWebviewPanel(
         'activeTasks',
         'Active tasks',
         vscode.ViewColumn.One,
-        {}
+        { enableScripts: true }
       );
 
-      panel.webview.html = getWebViewContent();
+      const processManager = await ProcessManager.forOS();
+
+      panel.webview.onDidReceiveMessage(message => {
+        switch (message.command) {
+          case 'refresh':
+
+          case 'kill':
+            vscode.window.showErrorMessage('This is a test');
+        }
+      });
+
+      panel.webview.html = await getWebViewContent(
+        await processManager.getProcesses()
+      );
     }
   );
 }
 
-function getWebViewContent() {
+async function getWebViewContent(processes: Process[]) {
   return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -31,33 +43,36 @@ function getWebViewContent() {
       <table class="table">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th scope="col">PID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Local Address</th>
+          <th scope="col">Foreign Address</th>
+          <th scope="col">State</th>
+          <th scope="Kill task"></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
+        ${processes.map(process => {
+          return `
+          <tr>
+            <td>${process.pid} </td>
+            <td>  ${process.name} </td>
+            <td> ${process.localAddress} </td>
+            <td>  ${process.foreignAddress} </td>
+            <td>${process.state}</td>
+            <td><a class="kill-btn" href="#" onclick="onKillTask()">Kill task</a></td>
+          </tr>`;
+        })}
       </tbody>
     </table>
+
+      <script>
+        function onKillTask(process) {
+          vscode.postMessage({
+            command: 'kill'
+          });
+        };
+      </script>
     </body>
     </html>`;
 }
