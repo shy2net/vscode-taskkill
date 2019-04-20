@@ -37,15 +37,25 @@ export abstract class ProcessManager {
   }
 
   /**
-   * Returns all of the processes ordered by interesting first.
+   * Returns all of the processes with a mark of 'interesting' or not. Interesting is determined by the port of each process.
+   * @param processes
    */
-  getOrderedProcesses(processes: Process[]): Process[] {
-    const markedProcesses = processes.map(process => {
+  getMarkedProcesses(
+    processes: Process[]
+  ): { process: Process; interesting: boolean }[] {
+    return processes.map(process => {
       return {
         process,
         interesting: this.isInterestingProcess(process)
       };
     });
+  }
+
+  /**
+   * Returns all of the processes ordered by interesting ones first.
+   */
+  getOrderedProcesses(processes: Process[]): Process[] {
+    const markedProcesses = this.getMarkedProcesses(processes);
 
     return markedProcesses
       .sort((a, b) => {

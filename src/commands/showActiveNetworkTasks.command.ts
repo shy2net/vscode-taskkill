@@ -7,9 +7,8 @@ import {
 } from '../process-manager';
 
 export class ShowActiveNetworkTasksCommand {
-  processManager!: ProcessManager;
   panel!: vscode.WebviewPanel;
-  constructor() {}
+  constructor(private processManager: ProcessManager) {}
 
   register() {
     return vscode.commands.registerCommand(
@@ -25,8 +24,7 @@ export class ShowActiveNetworkTasksCommand {
 
         this.panel = panel;
 
-        const processManager = await getProcessManagerForOS();
-        this.processManager = processManager;
+        const processManager = this.processManager;
 
         // Allow receiving messages from the webview
         panel.webview.onDidReceiveMessage(message => {
@@ -138,5 +136,3 @@ export class ShowActiveNetworkTasksCommand {
       </html>`;
   }
 }
-
-export default new ShowActiveNetworkTasksCommand();
