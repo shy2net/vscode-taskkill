@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
-import { ProcessManager } from '../process-manager/process-manager';
-import { Process } from '../process-manager';
+import {
+  Process,
+  ProcessManager,
+  getProcessManagerForOS
+} from '../process-manager';
 
 export function registerCommand() {
   return vscode.commands.registerCommand(
@@ -13,14 +16,32 @@ export function registerCommand() {
         { enableScripts: true }
       );
 
-      const processManager = await ProcessManager.forOS();
+      const processManager = await getProcessManagerForOS();
 
       panel.webview.onDidReceiveMessage(message => {
         switch (message.command) {
           case 'refresh':
 
           case 'kill':
-            vscode.window.showErrorMessage('This is a test');
+            processManager
+              .killProcess(message.pid as number)
+              .then(result => {
+                if (result)
+                  return vscode.window.showInformationMessage(
+                    `Succesfully killed process with pid: ${message.pid}`
+                  );
+
+                vscode.window.showErrorMessage(
+                  `Failed to kill process with pid ${message.pid}!`
+                );
+              })
+              .catch(err => {
+                vscode.window.showErrorMessage(
+                  `Failed to kill process with pid ${
+                    message.pid
+                  }, error: ${err}`
+                );
+              });
         }
       });
 
@@ -55,21 +76,26 @@ async function getWebViewContent(processes: Process[]) {
         ${processes.map(process => {
           return `
           <tr>
-            <td>${process.pid} </td>
-            <td>  ${process.name} </td>
-            <td> ${process.localAddress} </td>
-            <td>  ${process.foreignAddress} </td>
+            <td>${process.pid}</td>
+            <td>${process.name}</td>
+            <td>${process.localAddress}</td>
+            <td>${process.foreignAddress}</td>
             <td>${process.state}</td>
-            <td><a class="kill-btn" href="#" onclick="onKillTask()">Kill task</a></td>
+            <td><a href="#" onclick="onKillTask(${
+              process.pid
+            })" class="kill-btn">Kill task</a></td>
           </tr>`;
         })}
       </tbody>
     </table>
 
       <script>
-        function onKillTask(process) {
+      const vscode = acquireVsCodeApi();
+      
+        function onKillTask(pid) {
           vscode.postMessage({
-            command: 'kill'
+            command: 'kill',
+            pid
           });
         };
       </script>

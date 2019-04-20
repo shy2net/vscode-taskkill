@@ -1,31 +1,29 @@
-import * as getos from 'getos';
-
 import { Process } from './process';
-import { WindowsProcessManager } from './windows.process-manager';
 
+/**
+ * The process manager is responsible of fetching all running processes and managing them.
+ */
 export abstract class ProcessManager {
   constructor() {}
 
+  /**
+   * Gets all of the processes currently running.
+   */
   abstract getProcesses(): Promise<Process[]>;
 
-  abstract killProcess(process: Process): Promise<boolean>;
+  /**
+   * Kills a process with the specified PID.
+   * @param pid
+   */
+  abstract killProcess(pid: number): Promise<boolean>;
 
-  abstract isProcessLive(process: Process): Promise<boolean>;
-
-  static forOS(): Promise<ProcessManager> {
-    return new Promise((resolve, reject) => {
-      getos((error, result) => {
-        if (error) return reject(error);
-
-        switch (result.os) {
-          case 'win32':
-            return resolve(new WindowsProcessManager());
-        }
-
-        return Promise.reject(
-          new Error(`This operating system is not supported!`)
-        );
-      });
+  /**
+   * Returns true if a process is still alive.
+   * @param pid
+   */
+  isProcessLive(pid: number): Promise<boolean> {
+    return this.getProcesses().then(processes => {
+      return !!processes.find(p => p.pid === pid);
     });
   }
 }
