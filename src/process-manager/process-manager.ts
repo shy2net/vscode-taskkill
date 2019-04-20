@@ -26,4 +26,32 @@ export abstract class ProcessManager {
       return !!processes.find(p => p.pid === pid);
     });
   }
+
+  getProcessPort(process: Process): number {
+    return parseInt(process.localAddress.split(':')[1]);
+  }
+
+  isInterestingProcess(process: Process): boolean {
+    const interestingPorts = [8000, 8080, 3000, 4200];
+    return interestingPorts.includes(this.getProcessPort(process));
+  }
+
+  /**
+   * Returns all of the processes ordered by interesting first.
+   */
+  getOrderedProcesses(processes: Process[]): Process[] {
+    const markedProcesses = processes.map(process => {
+      return {
+        process,
+        interesting: this.isInterestingProcess(process)
+      };
+    });
+
+    return markedProcesses
+      .sort((a, b) => {
+        if (a.interesting && !b.interesting) return -1;
+        return 0;
+      })
+      .map(p => p.process);
+  }
 }
