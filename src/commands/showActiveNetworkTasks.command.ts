@@ -1,9 +1,6 @@
 import * as vscode from 'vscode';
 
-import {
-  Process,
-  ProcessManager
-} from '../process-manager';
+import { Process, ProcessManager } from '../process-manager';
 
 export class ShowActiveNetworkTasksCommand {
   panel!: vscode.WebviewPanel;
@@ -73,6 +70,26 @@ export class ShowActiveNetworkTasksCommand {
   }
 
   getWebViewContent(processes: Process[]) {
+    let processesHtml = '';
+
+    processes
+      .map(process => {
+        return `
+      <tr id="pid_${process.pid}">
+        <td>${process.pid}</td>
+        <td>${process.name}</td>
+        <td>${process.localAddress}</td>
+        <td>${process.foreignAddress}</td>
+        <td>${process.state}</td>
+        <td><a href="#" onclick="onKillTask(${
+          process.pid
+        })" class="kill-btn">Kill task</a></td>
+      </tr>`;
+      })
+      .forEach(html => {
+        processesHtml += html;
+      });
+
     return `<!DOCTYPE html>
       <html lang="en">
       <head>
@@ -93,19 +110,7 @@ export class ShowActiveNetworkTasksCommand {
           </tr>
         </thead>
         <tbody>
-          ${processes.map(process => {
-            return `
-            <tr id="pid_${process.pid}">
-              <td>${process.pid}</td>
-              <td>${process.name}</td>
-              <td>${process.localAddress}</td>
-              <td>${process.foreignAddress}</td>
-              <td>${process.state}</td>
-              <td><a href="#" onclick="onKillTask(${
-                process.pid
-              })" class="kill-btn">Kill task</a></td>
-            </tr>`;
-          })}
+          ${processesHtml}
         </tbody>
       </table>
   
