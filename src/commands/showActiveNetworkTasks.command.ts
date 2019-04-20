@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
 import {
-  getProcessManagerForOS,
   Process,
   ProcessManager
 } from '../process-manager';

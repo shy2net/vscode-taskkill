@@ -10,14 +10,23 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.showActiveNetworkTasks"
+		"onCommand:extension.showActiveNetworkTasks",
+		"onCommand:extension.forceKillActiveNetworkTasks",
+		"onCommand:extension.killActiveNetworkTask"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
+		"commands": [{
 				"command": "extension.showActiveNetworkTasks",
 				"title": "Show active network tasks"
+			},
+			{
+				"command": "extension.forceKillActiveNetworkTasks",
+				"title": "Kill all active network tasks"
+			},
+			{
+				"command": "extension.killActiveNetworkTask",
+				"title": "Kill an active network task (by port number)"
 			}
 		]
 	},

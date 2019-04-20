@@ -4,13 +4,21 @@ import * as vscode from 'vscode';
 
 import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command';
 import { getProcessManagerForOS } from './process-manager';
+import { ForceKillActiveNetworkTasksCommand } from './commands/forceKillActiveNetworkTasks.command';
+import { KillActiveNetworkTaskCommand } from './commands/killActiveNetworkTask.command';
 
 export function activate(context: vscode.ExtensionContext) {
   // First get the process manager responsible of handling all of the processes
   getProcessManagerForOS()
     .then(procManager => {
       // Register all VSCode extension commands
-      let command = new ShowActiveNetworkTasksCommand(procManager);
+      let command: any = new ShowActiveNetworkTasksCommand(procManager);
+      context.subscriptions.push(command.register());
+
+      command = new ForceKillActiveNetworkTasksCommand(procManager);
+      context.subscriptions.push(command.register());
+
+      command = new KillActiveNetworkTaskCommand(procManager);
       context.subscriptions.push(command.register());
     })
     .catch(error => {
