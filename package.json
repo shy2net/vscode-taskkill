@@ -29,6 +29,7 @@
 		"test": "npm run compile && node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
+		"@types/getos": "^3.0.0",
 		"@types/mocha": "^2.2.42",
 		"@types/node": "^10.12.21",
 		"@types/shelljs": "^0.8.5",
@@ -37,6 +38,7 @@
 		"vscode": "^1.1.28"
 	},
 	"dependencies": {
+		"getos": "^3.1.1",
 		"shelljs": "^0.8.3",
 		"table-parser": "^1.0.1"
 	}

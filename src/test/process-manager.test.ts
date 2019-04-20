@@ -1,7 +1,7 @@
-import { WindowsProcessManager } from '../process-manager/windows.process-manager';
+import { ProcessManager } from '../process-manager/process-manager';
 
-const procManager = new WindowsProcessManager();
-
-procManager.getProcesses().then(result => {
+ProcessManager.forOS().then(procManager => {
+  procManager.getProcesses().then(result => {
     console.log(result);
+  });
 });
