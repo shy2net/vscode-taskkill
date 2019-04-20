@@ -1,8 +1,13 @@
 {
 	"name": "vscode-taskkill",
-	"displayName": "TaskKill",
+	"displayName": "Task Kill",
 	"description": "",
+	"publisher": "Shynet",
 	"version": "0.0.3",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/shy2net/vscode-taskkill"
+	},
 	"engines": {
 		"vscode": "^1.33.0"
 	},
@@ -16,7 +21,8 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [{
+		"commands": [
+			{
 				"command": "extension.showActiveNetworkTasks",
 				"title": "Show active network tasks"
 			},
@@ -42,6 +48,7 @@
 		"@types/mocha": "^2.2.42",
 		"@types/node": "^10.12.21",
 		"@types/shelljs": "^0.8.5",
+		"semantic-release": "^15.13.3",
 		"tslint": "^5.12.1",
 		"typescript": "^3.3.1",
 		"vscode": "^1.1.28"
