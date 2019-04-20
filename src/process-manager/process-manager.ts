@@ -1,5 +1,6 @@
-import { Process } from './process';
 import * as getos from 'getos';
+
+import { Process } from './process';
 import { WindowsProcessManager } from './windows.process-manager';
 
 export abstract class ProcessManager {
@@ -21,7 +22,9 @@ export abstract class ProcessManager {
             return resolve(new WindowsProcessManager());
         }
 
-        return Promise.reject(new Error(`This operating system is not supported!`));
+        return Promise.reject(
+          new Error(`This operating system is not supported!`)
+        );
       });
     });
   }
