@@ -6,13 +6,12 @@ This extension allows you to easily kill active network processes on a specific 
 - Show and kill specific active network processes manually
 - Kill a specific network process by specifying a port number
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Killing a specific active network process
 
-For example if there is an image subfolder under your extension project workspace:
+![Killing a specific active network process](/images/kill_specific_process.gif)
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Show and kill active network processes
+![Show all active network processes](/images/show_active_tasks.gif)
 
 ## Usage
 
