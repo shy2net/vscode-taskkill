@@ -3,7 +3,7 @@
 	"displayName": "Task Kill",
 	"description": "",
 	"publisher": "Shynet",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/shy2net/vscode-taskkill"
