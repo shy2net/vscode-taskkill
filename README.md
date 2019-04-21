@@ -45,10 +45,14 @@ This extension contributes the following settings:
 
 ## Known Issues
 
-- This extension is currently only supported on Windows.
+- This extension is currently only supported on Windows and Mac.
 
 ## Release Notes
 
+### 0.0.4
+
+- Added MAC support
+
 ### 0.0.3
 
-Initial release of extension.
+- Initial release of extension.
