@@ -12,7 +12,7 @@ export class MacProcessManager extends ProcessManager {
 
   private getLsofProcesses(): Process[] {
     const result = shell.exec(`lsof -i -n -P`);
-    const entryRows = result.split(`\n`).splice(2); // Remove the headers
+    const entryRows = result.split(`\n`).splice(1) as string[]; // Remove the headers
 
     // Go through each line and map it's output into a process
     const processes = entryRows
@@ -20,22 +20,17 @@ export class MacProcessManager extends ProcessManager {
       .map(row => {
         const rowData = row.match(/([^\s]+)/gi) as RegExpMatchArray;
 
-        // If this is a process with no state, we should treat it differently
-        if (rowData.length < 5) {
-          return {
-            protocol: rowData[0],
-            localAddress: rowData[1],
-            foreignAddress: rowData[2],
-            pid: parseInt(rowData[3])
-          } as Process;
-        }
+        const address = rowData[8].split('->');
+        const localAddress = address[0];
+        const foreignAddress = address.length > 1 && address[1];
 
         return {
-          protocol: rowData[0],
-          localAddress: rowData[1],
-          foreignAddress: rowData[2],
-          state: rowData[3],
-          pid: parseInt(rowData[4])
+          name: rowData[0],
+          pid: parseInt(rowData[1]),
+          protocol: rowData[7],
+          localAddress,
+          foreignAddress: foreignAddress,
+          state: (rowData.length > 9 && rowData[9]) || 'NOT SET'
         } as Process;
       });
 
