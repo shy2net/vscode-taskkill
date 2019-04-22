@@ -1,3 +1,5 @@
+import * as vscode from 'vscode';
+
 import { Process } from './process';
 
 /**
@@ -32,7 +34,10 @@ export abstract class ProcessManager {
   }
 
   isInterestingProcess(process: Process): boolean {
-    const interestingPorts = [8000, 8080, 3000, 4200];
+    const interestingPorts = vscode.workspace
+      .getConfiguration('taskkill')
+      .get('interestingPorts') as number[];
+
     return interestingPorts.includes(this.getProcessPort(process));
   }
 
@@ -40,9 +45,7 @@ export abstract class ProcessManager {
    * Returns all of the processes with a mark of 'interesting' or not. Interesting is determined by the port of each process.
    * @param processes
    */
-  getMarkedProcesses(
-    processes: Process[]
-  ): { process: Process; interesting: boolean }[] {
+  getMarkedProcesses(processes: Process[]): { process: Process; interesting: boolean }[] {
     return processes.map(process => {
       return {
         process,

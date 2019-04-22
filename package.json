@@ -1,9 +1,9 @@
 {
 	"name": "vscode-taskkill",
 	"displayName": "Task Kill",
-	"description": "",
+	"description": "An extension which allows killing process which hang on specific network ports easily",
 	"publisher": "Shynet",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/shy2net/vscode-taskkill"
@@ -21,18 +21,39 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
+		"commands": [{
 				"command": "extension.showActiveNetworkTasks",
-				"title": "Show active network tasks"
+				"title": "Task Kill: Show active network tasks"
 			},
 			{
 				"command": "extension.forceKillActiveNetworkTasks",
-				"title": "Kill all active network tasks"
+				"title": "Task Kill: Kill all active network tasks"
 			},
 			{
 				"command": "extension.killActiveNetworkTask",
-				"title": "Kill an active network task (by port number)"
+				"title": "Task Kill: Kill an active network task (by port number)"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Task Kill Configurations",
+			"properties": {
+				"taskkill.interestingPorts": {
+					"type": "array",
+					"default": [3000, 4200, 8000],
+					"description": "An array of ports to be marked as interesting and will appear on top of the task kill list and killed automatically with the extension.forceKillActiveNetworkTask command."
+				}
+			}
+		},
+		"keybindings": [{
+				"command": "extension.killActiveNetworkTask",
+				"key": "ctrl+numpad_decimal",
+				"mac": "cmd+numpad_decimal"
+			},
+			{
+				"command": "extension.showActiveNetworkTasks",
+				"key": "ctrl+delete ctrl+shift",
+				"mac": "cmd+delete cmd+shift"
 			}
 		]
 	},
