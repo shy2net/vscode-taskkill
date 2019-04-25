@@ -3,7 +3,7 @@
 	"displayName": "Task Kill",
 	"description": "An extension which allows killing process which hang on specific network ports easily",
 	"publisher": "Shynet",
-	"version": "0.0.51",
+	"version": "0.0.52",
 	"icon": "images/icon.png",
 	"repository": {
 		"type": "git",
