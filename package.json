@@ -3,8 +3,8 @@
 	"displayName": "Task Kill",
 	"description": "An extension which allows killing process which hang on specific network ports easily",
 	"publisher": "Shynet",
-  "version": "0.0.51",
-  "icon": "images/icon.png",
+	"version": "0.0.51",
+	"icon": "images/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/shy2net/vscode-taskkill"
@@ -22,7 +22,8 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [{
+		"commands": [
+			{
 				"command": "extension.showActiveNetworkTasks",
 				"title": "Task Kill: Show active network tasks"
 			},
@@ -41,12 +42,17 @@
 			"properties": {
 				"taskkill.interestingPorts": {
 					"type": "array",
-					"default": [3000, 4200, 8000],
+					"default": [
+						3000,
+						4200,
+						8000
+					],
 					"description": "An array of ports to be marked as interesting and will appear on top of the task kill list and killed automatically with the extension.forceKillActiveNetworkTask command."
 				}
 			}
 		},
-		"keybindings": [{
+		"keybindings": [
+			{
 				"command": "extension.killActiveNetworkTask",
 				"key": "ctrl+numpad_decimal",
 				"mac": "cmd+numpad_decimal"
