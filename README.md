@@ -77,6 +77,7 @@ You can simply edit your own keybindings in the `keybindings.json` file:
 
 ### 0.0.52
 - Added icon
+- Added keywords to find extension easier
 
 ### 0.0.5
 - Added default keybindings and custom configurations

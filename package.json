@@ -1,89 +1,88 @@
 {
-	"name": "vscode-taskkill",
-	"displayName": "Task Kill",
-	"description": "An extension which allows killing process which hang on specific network ports easily",
-	"publisher": "Shynet",
-	"version": "0.0.52",
-	"icon": "images/icon.png",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/shy2net/vscode-taskkill"
-	},
-	"engines": {
-		"vscode": "^1.33.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.showActiveNetworkTasks",
-		"onCommand:extension.forceKillActiveNetworkTasks",
-		"onCommand:extension.killActiveNetworkTask"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.showActiveNetworkTasks",
-				"title": "Task Kill: Show active network tasks"
-			},
-			{
-				"command": "extension.forceKillActiveNetworkTasks",
-				"title": "Task Kill: Kill all active network tasks"
-			},
-			{
-				"command": "extension.killActiveNetworkTask",
-				"title": "Task Kill: Kill an active network task (by port number)"
-			}
-		],
-		"configuration": {
-			"type": "object",
-			"title": "Task Kill Configurations",
-			"properties": {
-				"taskkill.interestingPorts": {
-					"type": "array",
-					"default": [
-						3000,
-						4200,
-						8000
-					],
-					"description": "An array of ports to be marked as interesting and will appear on top of the task kill list and killed automatically with the extension.forceKillActiveNetworkTask command."
-				}
-			}
-		},
-		"keybindings": [
-			{
-				"command": "extension.killActiveNetworkTask",
-				"key": "ctrl+numpad_decimal",
-				"mac": "cmd+numpad_decimal"
-			},
-			{
-				"command": "extension.showActiveNetworkTasks",
-				"key": "ctrl+delete ctrl+shift",
-				"mac": "cmd+delete cmd+shift"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
-	},
-	"devDependencies": {
-		"@types/getos": "^3.0.0",
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^10.12.21",
-		"@types/shelljs": "^0.8.5",
-		"semantic-release": "^15.13.3",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"vscode": "^1.1.28"
-	},
-	"dependencies": {
-		"getos": "^3.1.1",
-		"shelljs": "^0.8.3",
-		"table-parser": "^1.0.1"
-	}
+  "name": "vscode-taskkill",
+  "displayName": "Task Kill",
+  "description": "An extension which allows killing process which hang on specific network ports easily",
+  "publisher": "Shynet",
+  "version": "0.0.52",
+  "icon": "images/icon.png",
+  "keywords": ["taskkill", "port", "network", "lsof", "netstat"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shy2net/vscode-taskkill"
+  },
+  "engines": {
+    "vscode": "^1.33.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.showActiveNetworkTasks",
+    "onCommand:extension.forceKillActiveNetworkTasks",
+    "onCommand:extension.killActiveNetworkTask"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [{
+        "command": "extension.showActiveNetworkTasks",
+        "title": "Task Kill: Show active network tasks"
+      },
+      {
+        "command": "extension.forceKillActiveNetworkTasks",
+        "title": "Task Kill: Kill all active network tasks"
+      },
+      {
+        "command": "extension.killActiveNetworkTask",
+        "title": "Task Kill: Kill an active network task (by port number)"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Task Kill Configurations",
+      "properties": {
+        "taskkill.interestingPorts": {
+          "type": "array",
+          "default": [
+            3000,
+            4200,
+            8000
+          ],
+          "description": "An array of ports to be marked as interesting and will appear on top of the task kill list and killed automatically with the extension.forceKillActiveNetworkTask command."
+        }
+      }
+    },
+    "keybindings": [{
+        "command": "extension.killActiveNetworkTask",
+        "key": "ctrl+numpad_decimal",
+        "mac": "cmd+numpad_decimal"
+      },
+      {
+        "command": "extension.showActiveNetworkTasks",
+        "key": "ctrl+delete ctrl+shift",
+        "mac": "cmd+delete cmd+shift"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/getos": "^3.0.0",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^10.12.21",
+    "@types/shelljs": "^0.8.5",
+    "semantic-release": "^15.13.3",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.1",
+    "vscode": "^1.1.28"
+  },
+  "dependencies": {
+    "getos": "^3.1.1",
+    "shelljs": "^0.8.3",
+    "table-parser": "^1.0.1"
+  }
 }
