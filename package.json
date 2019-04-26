@@ -5,7 +5,13 @@
   "publisher": "Shynet",
   "version": "0.0.52",
   "icon": "images/icon.png",
-  "keywords": ["taskkill", "port", "network", "lsof", "netstat"],
+  "keywords": [
+    "taskkill",
+    "port",
+    "network",
+    "lsof",
+    "netstat"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/shy2net/vscode-taskkill"
@@ -23,7 +29,8 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [{
+    "commands": [
+      {
         "command": "extension.showActiveNetworkTasks",
         "title": "Task Kill: Show active network tasks"
       },
@@ -51,7 +58,8 @@
         }
       }
     },
-    "keybindings": [{
+    "keybindings": [
+      {
         "command": "extension.killActiveNetworkTask",
         "key": "ctrl+numpad_decimal",
         "mac": "cmd+numpad_decimal"

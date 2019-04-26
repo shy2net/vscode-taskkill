@@ -1,9 +1,16 @@
-# Change Log
+### 0.0.52
 
-All notable changes to the "vscode-taskkill" extension will be documented in this file.
+- Added icon
+- Added keywords to find extension easier
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### 0.0.5
 
-## [Unreleased]
+- Added default keybindings and custom configurations
 
-- Initial release
+### 0.0.4
+
+- Added MAC support
+
+### 0.0.3
+
+- Initial release of extension.

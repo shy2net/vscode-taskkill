@@ -72,22 +72,3 @@ You can simply edit your own keybindings in the `keybindings.json` file:
 ## Known Issues
 
 - This extension is currently only supported on Windows and Mac.
-
-## Release Notes
-
-### 0.0.52
-
-- Added icon
-- Added keywords to find extension easier
-
-### 0.0.5
-
-- Added default keybindings and custom configurations
-
-### 0.0.4
-
-- Added MAC support
-
-### 0.0.3
-
-- Initial release of extension.

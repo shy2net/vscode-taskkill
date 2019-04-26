@@ -98,6 +98,11 @@ export class ShowActiveNetworkTasksCommand {
           <title>Active Network Tasks</title>
       </head>
       <body>
+
+        <div>
+          <input id="query_search" type="text" placeholder="Search for a specific process by name, pid or port..." />
+        </div>
+
         <table class="table">
         <thead>
           <tr>
@@ -128,6 +133,16 @@ export class ShowActiveNetworkTasksCommand {
                     break;
             }
           });
+
+          document.querySelector('#query_search').addEventListener('keydown', (event) => {
+            createProcessRow(null);
+          });
+
+          function createProcessRow(process) {
+            const trElement = document.createElement('tr');
+            trElement.innerHTML = '<div>Thisi s a test</div>
+            document.querySelector('tbody').appendChild(trElement);
+          }
   
           function onKillTask(pid) {
             vscode.postMessage({
