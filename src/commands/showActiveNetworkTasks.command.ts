@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Process, ProcessManager } from '../../process-manager';
+import { Process, ProcessManager } from '../process-manager';
 
 export class ShowActiveNetworkTasksCommand {
   panel!: vscode.WebviewPanel;
@@ -89,7 +89,8 @@ export class ShowActiveNetworkTasksCommand {
     const htmlFilePath: vscode.Uri = vscode.Uri.file(
       path.join(
         this.context.extensionPath,
-        'src/commands/showActiveNetworkTasks.command/showActiveNetworkTasks.command.html'
+        'html',
+        'showActiveNetworkTasks.command.html'
       )
     );
 

@@ -3,7 +3,7 @@
   "displayName": "Task Kill",
   "description": "Allows killing processes that hang on specific network ports easily",
   "publisher": "Shynet",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "icon": "images/icon.png",
   "keywords": [
     "taskkill",

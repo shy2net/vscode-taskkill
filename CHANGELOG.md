@@ -1,3 +1,6 @@
+### 0.0.56
+- Fixed issue with show tasks table HTML parse error
+
 ### 0.0.55
 
 - Added more functions to tasks table

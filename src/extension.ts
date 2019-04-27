@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 
 import { ForceKillActiveNetworkTasksCommand } from './commands/forceKillActiveNetworkTasks.command';
 import { KillActiveNetworkTaskCommand } from './commands/killActiveNetworkTask.command';
-import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command/showActiveNetworkTasks.command';
+import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command';
 import { getProcessManagerForOS } from './process-manager';
 
 export function activate(context: vscode.ExtensionContext) {
