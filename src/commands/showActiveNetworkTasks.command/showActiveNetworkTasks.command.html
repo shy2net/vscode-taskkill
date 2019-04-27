@@ -5,12 +5,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Active Network Tasks</title>
+
+    <style type="text/css">
+        body {
+            color: #fff;
+            padding: 15px;
+        }
+
+        .functions-wrapper {
+            display: flex;
+        }
+
+        input {
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 1px 3px #ddd;
+            border-radius: 4px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 8px;
+        }
+
+        #query_search {
+            flex: 1;
+        }
+
+        #refresh_btn {
+            margin-left: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        th {
+            padding-top: 11px;
+            padding-bottom: 11px;
+            background-color: #525252;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #6d6d6d9a;
+        }
+
+        td,
+        th {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div>
+    <div class="functions-wrapper">
         <input id="query_search" type="text" placeholder="Search for a specific process by name, pid or port..." />
+        <input id="refresh_btn" type="button" value="Refresh" />
     </div>
 
     <table class="table">
@@ -30,15 +86,8 @@
     </table>
 
     <script>
-        let processes = [{
-            pid: 12345,
-            name: 'node',
-            localAddress: '10.0.0.1:3000',
-            foreignAddress: '20.40.30.50',
-            protocol: 'TCP',
-            state: 'Listening'
-        }];
-        //  const vscode = acquireVsCodeApi();
+        let processes = [];
+        const vscode = acquireVsCodeApi();
 
 
         window.addEventListener('message', event => {
@@ -61,6 +110,10 @@
         document.querySelector('#query_search').addEventListener('keydown', (event) => {
             // Wait for a second for the changes to be applied to the textbox
             setTimeout(() => applyFilter(event.target.value));
+        });
+
+        document.querySelector('#refresh_btn').addEventListener('click', (event) => {
+            onRefreshClick();
         });
 
         /**
@@ -88,7 +141,6 @@
             });
         }
 
-
         /**
          * Create a process representing a row.
          */
@@ -101,7 +153,7 @@
                     <td>${process.localAddress}</td>
                     <td>${process.foreignAddress}</td>
                     <td>${process.state}</td>
-                    <td><a href="#" onclick="onKillTask(${
+                    <td><a href="javascript: void(0)" onclick="onKillTask(${
                     process.pid
                     })" class="kill-btn">Kill task</a></td>
                 </tr>`;
@@ -110,6 +162,12 @@
 
         function clearProcesses() {
             document.querySelector('tbody').innerHTML = '';
+        }
+
+        function onRefreshClick() {
+            vscode.postMessage({
+                command: 'refresh'
+            });
         }
 
         function onKillTask(pid) {

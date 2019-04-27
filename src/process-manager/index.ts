@@ -22,9 +22,7 @@ export function getProcessManagerForOS(): Promise<ProcessManager> {
           return resolve(new MacProcessManager());
       }
 
-      return Promise.reject(
-        new Error(`This operating system is not supported!`)
-      );
+      return Promise.reject(new Error(`This operating system is not supported!`));
     });
   });
 }

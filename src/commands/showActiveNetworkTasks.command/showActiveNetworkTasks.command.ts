@@ -17,22 +17,23 @@ export class ShowActiveNetworkTasksCommand {
 
       this.panel = panel;
 
-      const processManager = this.processManager;
-
       // Allow receiving messages from the webview
       panel.webview.onDidReceiveMessage(message => {
         this.handleWebviewMessage(message);
       });
 
-      // Fetch all of the processes
-      const processes = await processManager.getProcesses();
-
-      // Order them from interesting to not interesting
-      const orderedProcesses = processManager.getOrderedProcesses(processes);
-
       // Set the webview content with the process we obtained
-      panel.webview.html = this.getWebViewContent(orderedProcesses);
+      panel.webview.html = this.getWebViewContent(await this.getProcessesForWebview());
     });
+  }
+
+  async getProcessesForWebview(): Promise<Process[]> {
+    // Fetch all of the processes
+    const processes = await this.processManager.getProcesses();
+
+    // Order them from interesting to not interesting
+    const orderedProcesses = this.processManager.getOrderedProcesses(processes);
+    return orderedProcesses;
   }
 
   handleWebviewMessage(message: any) {
@@ -58,14 +59,43 @@ export class ShowActiveNetworkTasksCommand {
           .catch(err => {
             vscode.window.showErrorMessage(`Failed to kill process with pid ${message.pid}, error: ${err}`);
           });
+        break;
+
+      case 'refresh':
+        vscode.window
+          .withProgress(
+            {
+              location: vscode.ProgressLocation.Notification,
+              title: 'Refreshing processes...'
+            },
+            async () => {
+              return await this.getProcessesForWebview();
+            }
+          )
+          .then((processes: Process[]) => {
+            this.panel.webview.postMessage({
+              command: 'refresh_tasks',
+              processes
+            });
+
+            vscode.window.showInformationMessage(`Refreshed ${processes.length} processes!`);
+          });
+        this.getProcessesForWebview().then(processes => {});
+        break;
     }
   }
 
-  getWebViewContent(): string {
+  getWebViewContent(processes: Process[]): string {
     const htmlFilePath: vscode.Uri = vscode.Uri.file(
-      path.join(this.context.extensionPath, 'src/commands/showActiveNetworkTasks.command.html')
+      path.join(
+        this.context.extensionPath,
+        'src/commands/showActiveNetworkTasks.command/showActiveNetworkTasks.command.html'
+      )
     );
 
-    return fs.readFileSync(htmlFilePath.fsPath, 'utf8');
+    const htmlFile = fs
+      .readFileSync(htmlFilePath.fsPath, 'utf8')
+      .replace('let processes = []', `let processes = ${JSON.stringify(processes)}`);
+    return htmlFile;
   }
 }

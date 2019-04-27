@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
   getProcessManagerForOS()
     .then(procManager => {
       // Register all VSCode extension commands
-      let command: any = new ShowActiveNetworkTasksCommand(procManager);
+      let command: any = new ShowActiveNetworkTasksCommand(context, procManager);
       context.subscriptions.push(command.register());
 
       command = new ForceKillActiveNetworkTasksCommand(procManager);

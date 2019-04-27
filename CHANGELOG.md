@@ -1,3 +1,8 @@
+### 0.0.55
+
+- Added more functions to tasks table
+- Styled tasks tables
+
 ### 0.0.52
 
 - Added icon
