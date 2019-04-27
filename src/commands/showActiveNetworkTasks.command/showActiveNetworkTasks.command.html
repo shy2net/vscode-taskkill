@@ -96,8 +96,9 @@
 
             switch (message.command) {
                 case 'task_killed':
-                    // Remove the entry as the task was killed
-                    document.querySelector('#pid_' + message.pid).remove();
+                    // Remove the process and update the list
+                    processes = processes.filter(proc => proc.pid != message.pid);
+                    applyFilter(document.querySelector('#query_search').value);
                     break;
                 case 'refresh_tasks':
                     // Refresh all of the tasks with the new processes obtained
