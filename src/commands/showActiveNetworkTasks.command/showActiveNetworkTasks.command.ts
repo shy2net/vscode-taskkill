@@ -1,42 +1,38 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
 
-import { Process, ProcessManager } from '../process-manager';
+import { Process, ProcessManager } from '../../process-manager';
 
 export class ShowActiveNetworkTasksCommand {
   panel!: vscode.WebviewPanel;
-  constructor(private processManager: ProcessManager) {}
+  constructor(private context: vscode.ExtensionContext, private processManager: ProcessManager) {}
 
   register() {
-    return vscode.commands.registerCommand(
-      'extension.showActiveNetworkTasks',
-      async () => {
-        // Create our task management panel
-        const panel = vscode.window.createWebviewPanel(
-          'activeTasks',
-          'Active tasks',
-          vscode.ViewColumn.One,
-          { enableScripts: true }
-        );
+    return vscode.commands.registerCommand('extension.showActiveNetworkTasks', async () => {
+      // Create our task management panel
+      const panel = vscode.window.createWebviewPanel('activeTasks', 'Active tasks', vscode.ViewColumn.One, {
+        enableScripts: true
+      });
 
-        this.panel = panel;
+      this.panel = panel;
 
-        const processManager = this.processManager;
+      const processManager = this.processManager;
 
-        // Allow receiving messages from the webview
-        panel.webview.onDidReceiveMessage(message => {
-          this.handleWebviewMessage(message);
-        });
+      // Allow receiving messages from the webview
+      panel.webview.onDidReceiveMessage(message => {
+        this.handleWebviewMessage(message);
+      });
 
-        // Fetch all of the processes
-        const processes = await processManager.getProcesses();
+      // Fetch all of the processes
+      const processes = await processManager.getProcesses();
 
-        // Order them from interesting to not interesting
-        const orderedProcesses = processManager.getOrderedProcesses(processes);
+      // Order them from interesting to not interesting
+      const orderedProcesses = processManager.getOrderedProcesses(processes);
 
-        // Set the webview content with the process we obtained
-        panel.webview.html = this.getWebViewContent(orderedProcesses);
-      }
-    );
+      // Set the webview content with the process we obtained
+      panel.webview.html = this.getWebViewContent(orderedProcesses);
+    });
   }
 
   handleWebviewMessage(message: any) {
@@ -57,101 +53,19 @@ export class ShowActiveNetworkTasksCommand {
               );
             }
 
-            vscode.window.showErrorMessage(
-              `Failed to kill process with pid ${message.pid}!`
-            );
+            vscode.window.showErrorMessage(`Failed to kill process with pid ${message.pid}!`);
           })
           .catch(err => {
-            vscode.window.showErrorMessage(
-              `Failed to kill process with pid ${message.pid}, error: ${err}`
-            );
+            vscode.window.showErrorMessage(`Failed to kill process with pid ${message.pid}, error: ${err}`);
           });
     }
   }
 
-  getWebViewContent(processes: Process[]) {
-    let processesHtml = '';
+  getWebViewContent(): string {
+    const htmlFilePath: vscode.Uri = vscode.Uri.file(
+      path.join(this.context.extensionPath, 'src/commands/showActiveNetworkTasks.command.html')
+    );
 
-    processes
-      .map(process => {
-        return `
-      <tr id="pid_${process.pid}">
-        <td>${process.pid}</td>
-        <td>${process.name}</td>
-        <td>${process.localAddress}</td>
-        <td>${process.foreignAddress}</td>
-        <td>${process.state}</td>
-        <td><a href="#" onclick="onKillTask(${
-          process.pid
-        })" class="kill-btn">Kill task</a></td>
-      </tr>`;
-      })
-      .forEach(html => {
-        processesHtml += html;
-      });
-
-    return `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Active Network Tasks</title>
-      </head>
-      <body>
-
-        <div>
-          <input id="query_search" type="text" placeholder="Search for a specific process by name, pid or port..." />
-        </div>
-
-        <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">PID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Local Address</th>
-            <th scope="col">Foreign Address</th>
-            <th scope="col">State</th>
-            <th scope="col">Functions</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${processesHtml}
-        </tbody>
-      </table>
-  
-        <script>
-          const vscode = acquireVsCodeApi();
-  
-          window.addEventListener('message', event => {
-  
-            const message = event.data;
-  
-            switch (message.command) {
-                case 'task_killed':
-                    // Remove the entry as the task was killed
-                    document.querySelector('#pid_' + message.pid).remove();
-                    break;
-            }
-          });
-
-          document.querySelector('#query_search').addEventListener('keydown', (event) => {
-            createProcessRow(null);
-          });
-
-          function createProcessRow(process) {
-            const trElement = document.createElement('tr');
-            trElement.innerHTML = '<div>Thisi s a test</div>
-            document.querySelector('tbody').appendChild(trElement);
-          }
-  
-          function onKillTask(pid) {
-            vscode.postMessage({
-              command: 'kill',
-              pid
-            });
-          };
-        </script>
-      </body>
-      </html>`;
+    return fs.readFileSync(htmlFilePath.fsPath, 'utf8');
   }
 }

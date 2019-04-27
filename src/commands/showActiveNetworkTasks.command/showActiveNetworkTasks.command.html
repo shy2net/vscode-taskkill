@@ -50,13 +50,22 @@
                     // Remove the entry as the task was killed
                     document.querySelector('#pid_' + message.pid).remove();
                     break;
+                case 'refresh_tasks':
+                    // Refresh all of the tasks with the new processes obtained
+                    processes = message.processes;
+                    applyFilter(document.querySelector('#query_search').value);
+                    break;
             }
         });
 
         document.querySelector('#query_search').addEventListener('keydown', (event) => {
-            applyFilter(event.target.value);
+            // Wait for a second for the changes to be applied to the textbox
+            setTimeout(() => applyFilter(event.target.value));
         });
 
+        /**
+         * Applies a filter to show all processes which apply to that specific filter.
+         **/
         function applyFilter(filter = null) {
             clearProcesses();
             let filteredProcesses = processes;
@@ -80,6 +89,9 @@
         }
 
 
+        /**
+         * Create a process representing a row.
+         */
         function createProcessRow(process) {
             const trElement = document.createElement('tr');
             trElement.innerHTML = `
