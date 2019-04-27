@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Network Tasks</title>
+</head>
+
+<body>
+
+    <div>
+        <input id="query_search" type="text" placeholder="Search for a specific process by name, pid or port..." />
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">PID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Local Address</th>
+                <th scope="col">Foreign Address</th>
+                <th scope="col">State</th>
+                <th scope="col">Functions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script>
+        let processes = [{
+            pid: 12345,
+            name: 'node',
+            localAddress: '10.0.0.1:3000',
+            foreignAddress: '20.40.30.50',
+            protocol: 'TCP',
+            state: 'Listening'
+        }];
+        //  const vscode = acquireVsCodeApi();
+
+
+        window.addEventListener('message', event => {
+
+            const message = event.data;
+
+            switch (message.command) {
+                case 'task_killed':
+                    // Remove the entry as the task was killed
+                    document.querySelector('#pid_' + message.pid).remove();
+                    break;
+            }
+        });
+
+        document.querySelector('#query_search').addEventListener('keydown', (event) => {
+            applyFilter(event.target.value);
+        });
+
+        function applyFilter(filter = null) {
+            clearProcesses();
+            let filteredProcesses = processes;
+
+            if (filter) {
+                filteredProcesses = filteredProcesses.filter(proc => {
+                    for (const key of Object.keys(proc)) {
+                        const val = proc[key];
+                        if (val && val.toString().toLowerCase().includes(filter.toString().toLowerCase())) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                });
+            }
+
+            filteredProcesses.forEach(proc => {
+                createProcessRow(proc);
+            });
+        }
+
+
+        function createProcessRow(process) {
+            const trElement = document.createElement('tr');
+            trElement.innerHTML = `
+                <tr id="pid_${process.pid}">
+                    <td>${process.pid}</td>
+                    <td>${process.name}</td>
+                    <td>${process.localAddress}</td>
+                    <td>${process.foreignAddress}</td>
+                    <td>${process.state}</td>
+                    <td><a href="#" onclick="onKillTask(${
+                    process.pid
+                    })" class="kill-btn">Kill task</a></td>
+                </tr>`;
+            document.querySelector('tbody').appendChild(trElement);
+        }
+
+        function clearProcesses() {
+            document.querySelector('tbody').innerHTML = '';
+        }
+
+        function onKillTask(pid) {
+            vscode.postMessage({
+                command: 'kill',
+                pid
+            });
+        };
+
+        applyFilter();
+    </script>
+</body>
+
+</html>

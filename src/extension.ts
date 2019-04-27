@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command';
+import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command/showActiveNetworkTasks.command';
 import { getProcessManagerForOS } from './process-manager';
 import { ForceKillActiveNetworkTasksCommand } from './commands/forceKillActiveNetworkTasks.command';
 import { KillActiveNetworkTaskCommand } from './commands/killActiveNetworkTask.command';
