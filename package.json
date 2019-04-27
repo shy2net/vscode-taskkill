@@ -1,9 +1,9 @@
 {
   "name": "vscode-taskkill",
   "displayName": "Task Kill",
-  "description": "An extension which allows killing process which hang on specific network ports easily",
+  "description": "Allows killing processes that hang on specific network ports easily",
   "publisher": "Shynet",
-  "version": "0.0.52",
+  "version": "0.0.55",
   "icon": "images/icon.png",
   "keywords": [
     "taskkill",

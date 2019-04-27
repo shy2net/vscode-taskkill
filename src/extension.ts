@@ -2,10 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command/showActiveNetworkTasks.command';
-import { getProcessManagerForOS } from './process-manager';
 import { ForceKillActiveNetworkTasksCommand } from './commands/forceKillActiveNetworkTasks.command';
 import { KillActiveNetworkTaskCommand } from './commands/killActiveNetworkTask.command';
+import { ShowActiveNetworkTasksCommand } from './commands/showActiveNetworkTasks.command/showActiveNetworkTasks.command';
+import { getProcessManagerForOS } from './process-manager';
 
 export function activate(context: vscode.ExtensionContext) {
   // First get the process manager responsible of handling all of the processes
@@ -22,9 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
       context.subscriptions.push(command.register());
     })
     .catch(error => {
-      vscode.window.showErrorMessage(
-        `Failed to initialize vscode-taskkill with error: ${error}`
-      );
+      vscode.window.showErrorMessage(`Failed to initialize vscode-taskkill with error: ${error}`);
     });
 }
 
