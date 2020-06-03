@@ -3,7 +3,7 @@
   "displayName": "Task Kill",
   "description": "Allows killing processes that hang on specific network ports easily",
   "publisher": "Shynet",
-  "version": "0.0.56",
+  "version": "0.0.59",
   "icon": "images/icon.png",
   "keywords": [
     "taskkill",
@@ -82,7 +82,6 @@
     "@types/getos": "^3.0.0",
     "@types/mocha": "^2.2.42",
     "@types/node": "^10.12.21",
-    "@types/shelljs": "^0.8.5",
     "semantic-release": "^15.13.3",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
@@ -90,7 +89,6 @@
   },
   "dependencies": {
     "getos": "^3.1.1",
-    "shelljs": "^0.8.3",
     "table-parser": "^1.0.1"
   }
 }
