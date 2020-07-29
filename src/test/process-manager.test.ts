@@ -1,10 +1,7 @@
-import {
-  ProcessManager,
-  getProcessManagerForOS
-} from '../process-manager';
+import { getProcessManagerForOS } from '../process-manager';
 
-getProcessManagerForOS().then(procManager => {
-  procManager.getProcesses().then(result => {
+getProcessManagerForOS().then((procManager) => {
+  procManager.getProcesses().then((result) => {
     console.log(result);
   });
 });

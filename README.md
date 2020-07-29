@@ -71,4 +71,4 @@ You can simply edit your own keybindings in the `keybindings.json` file:
 
 ## Known Issues
 
-- This extension is currently only supported on Windows and Mac.
+- This extension was tested and found to be working on Windows, Mac, and Ubuntu. It should work on most Linux distributions.

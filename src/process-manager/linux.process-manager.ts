@@ -2,7 +2,7 @@ import { exec } from '../utils';
 import { Process } from './process';
 import { ProcessManager } from './process-manager';
 
-export class MacProcessManager extends ProcessManager {
+export class LinuxProcessManager extends ProcessManager {
   getProcesses(): Promise<Process[]> {
     const processes = this.getLsofProcesses();
 
